@@ -7,13 +7,14 @@ public class Services {
 	public static void main(String args[]) {
 		Scanner sc = new Scanner(System.in);
 		System.out.println("Enter Employee Id");
-		String empId = sc.next();
+		String empId = sc.nextLine();
 		System.out.println("Enter Employee Name");
-		String empName = sc.next();
+		String empName = sc.nextLine();
+		System.out.println("Enter Employee Designation");
+		String designation = sc.nextLine();
 		System.out.println("Enter Employee Salary");
 		double salary = sc.nextDouble();
-		System.out.println("Enter Employee Designation");
-		String designation = sc.next();
+
 		System.out.println("------------------------------------");
 		EmployeeService obj2 = new EmployeeService();
 		obj2.setValues(empId,empName,salary,designation);
@@ -21,3 +22,4 @@ public class Services {
 		obj2.findInsuranceScheme(salary);
 	}
 }
+
