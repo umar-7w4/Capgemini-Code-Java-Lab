@@ -1,4 +1,6 @@
 package bank.account;
+import java.util.Scanner;
+
 abstract class Account{
 	
     long accNum;
@@ -7,17 +9,12 @@ abstract class Account{
 	public abstract long getAccNum();
 	public abstract void setAccNum(long accNum);
 	public abstract double getBalance();
-	public abstract void deposit(double amount);
-	public abstract void withdraw(double amount);
-
 }
 
 class Person extends Account{
 	
 	private String name;
 	private int age;
-	final double minimumBalance = 500;
-	final double overdraft = 10000;
 	
 	public String getName() {
 		return name;
@@ -37,78 +34,121 @@ class Person extends Account{
 		this.age = age;
 		this.accNum = accNum;
 	}	
-	
-	static boolean overdraftCheck(double amount) {
-		if (amount<=10000) {
-			return true;
-		}
-		return false;
+	@Override
+	public long getAccNum() {
+		// TODO Auto-generated method stub
+		return 0;
 	}
-	
 	@Override
 	public void setAccNum(long accNum) {
-		this.accNum = accNum;
+		// TODO Auto-generated method stub
+		
 	}
+	@Override
+	public double getBalance() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+}
+
+class SavingsAccount extends Account {
+	
+	final double minimumBalance = 500;
+	
 	@Override
 	public long getAccNum() {
 		return accNum;
 	}
+
+	@Override
+	public void setAccNum(long accNum) {
+		this.accNum = accNum;	
+	}
+
 	@Override
 	public double getBalance() {
 		return balance;
 	}
-	@Override
+
 	public void deposit(double amount) {
-		balance = balance+amount;
+		balance = balance + amount;		
 	}
 	
-	@Override
-	public void withdraw(double amount) {	
-		if (overdraftCheck(amount)) {		
-			if ((balance-amount)<500) {
-				System.out.println("Warnings :");
-				System.out.println();
-				System.out.println("Minimum balance for account holder "+name+" should be "+minimumBalance);
-				System.out.println();
-				System.out.println("---------------------------------------------------------------------");
-			}
-			else {
-				balance = balance - amount;
-			}	
+	public void withdraw(double amount) {
+		if ((balance - amount)>=500) {
+			balance = balance - amount;
 		}
 		else {
-			System.out.println("Maximum amount that can be withdrawn by "+name+" is "+overdraft);
-			System.out.println();
-			System.out.println("---------------------------------------------------------------------");
-		}
+		System.out.println("Minimum balance of Rupees "+minimumBalance+" is requried");
 	}
+  }
 }
 
+class CurrentAccount extends Account{
+	
+	final double overdraft = 10000;
+
+	@Override
+	public long getAccNum() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public void setAccNum(long accNum) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public double getBalance() {
+		return balance;
+	}
+	
+	public void withdraw(double amount) {
+		if (amount>=10000) {
+			System.out.println("Maximum amount that can be debited is : "+overdraft);
+		}
+	}	
+}
 
 
 public class BankAccount {
    public static void main(String[] args) {
-	   Person obj1 = new Person("Mohammad Umar",21,62465688531l);
-	   Person obj2 = new Person("Shashank nani",20,51665688531l);
-	   obj1.deposit(10000);
-	   obj1.withdraw(10000);
-
-	   obj2.deposit(20000);
-	   obj2.withdraw(20000);
-
-	   System.out.println("Displaying details of "+obj1.getName());
-	   System.out.println("------------------------------------");
-	   System.out.println("Account Number :"+obj1.getAccNum());
+	   SavingsAccount s = new SavingsAccount();
+	   CurrentAccount c = new CurrentAccount();
+	   
+	   Scanner sc = new Scanner(System.in);
+	   System.out.println("Enter Name of the Account Holder : ");
+	   String name = sc.nextLine();
+	   System.out.println("Enter Age of the Account Holder : ");
+	   int age = sc.nextInt();
+	   System.out.println("Enter Account number of the Account Holder : ");
+	   long accNum = sc.nextLong();
+	   
+	   System.out.println("--------------------------------------------------------");
+	   
+	   Person obj1 = new Person(name,age,accNum);
+	   System.out.println("Enter the amount that you want to deposit : ");
+	   double depositAmmount = sc.nextDouble();
+	   s.deposit(depositAmmount);
 	   System.out.println("Account Holder : "+obj1.getName());
 	   System.out.println("Account Holder Age : "+obj1.getAge());
-	   System.out.println("Account Balance : "+obj1.getBalance());
-	   System.out.println("------------------------------------");
-	   System.out.println("Displaying details of "+obj2.getName());
-	   System.out.println("------------------------------------");
-	   System.out.println("Account Number :"+obj2.getAccNum());
-	   System.out.println("Account Holder : "+obj2.getName());
-	   System.out.println("Account Holder Age : "+obj2.getAge());
-	   System.out.println("Account Balance : "+obj2.getBalance());
-	   System.out.println("------------------------------------");
+	   System.out.println("Account Number : "+obj1.getAccNum());
+	   System.out.println("Account Balance : "+s.getBalance());
+	   
+	   System.out.println("--------------------------------------------------------");
+	  
+	   System.out.println("Enter the amount that you want to withdraw : ");
+	   double withdrawAmount = sc.nextDouble();
+	   
+	   if (withdrawAmount >= 10000) {
+		   c.withdraw(withdrawAmount);
+		   System.out.println("Account Balance : "+s.getBalance());
+	   }
+	   else {
+		   s.withdraw(withdrawAmount);
+		   System.out.println("Account Balance : "+s.getBalance());
+	  }
    }
 }
