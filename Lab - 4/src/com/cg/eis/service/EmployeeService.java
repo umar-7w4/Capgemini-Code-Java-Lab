@@ -3,12 +3,13 @@ import com.cg.eis.bean.*;
 import java.util.Scanner;
 
 interface Findable{
-	void findInsuranceScheme();
-	void setValues();
+	
+	void findInsuranceScheme(double salary);
+	void setValues(String empId,String empName ,double salary,String designation);
 	void display();
 }
 
-public class EmployeeService {
+public class EmployeeService implements Findable {
 	
 	Employee obj = new Employee();
 	
@@ -40,5 +41,8 @@ public class EmployeeService {
 			System.out.println("Insurance Scheme => LUXURIOUS SCHEME");
 		}
 	}
+
 }
+
+
 
